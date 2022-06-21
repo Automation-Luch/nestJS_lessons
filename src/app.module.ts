@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -8,12 +9,12 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { JwtStrategy } from './auth/jwt.strategy';
 
+const dotenv = require('dotenv');
+dotenv.config();
 @Module({
   imports: [
     ProductsModule,
-    MongooseModule.forRoot(
-      'mongodb+srv://Oleksiy:i1iarydotatinawux@cluster0.xjxvr.mongodb.net/products?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot(process.env.MONGO_DB),
     AuthModule,
     UsersModule,
   ],
