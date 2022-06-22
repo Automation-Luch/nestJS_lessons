@@ -14,7 +14,7 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { HttpStatus } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Product } from './schema/products.shema';
+import { Product } from './schema/products.schema';
 
 @Controller('products')
 export class ProductsController {
