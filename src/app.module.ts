@@ -1,3 +1,5 @@
+import { getMongoConfig } from './config/mongo.config';
+import { ConfigService } from '@nestjs/config';
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -7,14 +9,17 @@ import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { JwtStrategy } from './auth/jwt.strategy';
+import { ConfigModule } from '@nestjs/config';
 
-const dotenv = require('dotenv');
-dotenv.config();
 @Module({
   imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getMongoConfig,
+    }),
     ProductsModule,
-    MongooseModule.forRoot(process.env.MONGO_DB),
     AuthModule,
     UsersModule,
   ],
