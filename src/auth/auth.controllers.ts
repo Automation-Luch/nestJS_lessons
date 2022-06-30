@@ -1,39 +1,31 @@
 import {
-  Controller,
-  Get,
-  Request,
-  Post,
-  UseGuards,
-  HttpStatus,
-  HttpCode,
-  Body,
-  Header,
-} from '@nestjs/common';
-import { JwtAuthGuard } from './jwt-auth.guard';
-import { LocalAuthGuard } from './local-auth.guard';
-import { AuthService } from './auth.service';
-import { CreateUserDto } from 'src/users/user.dto';
+	Controller,
+	Request,
+	Post,
+	UseGuards,
+	HttpStatus,
+	HttpCode,
+	Body,
+	Header,
+} from '@nestjs/common'
+import { LocalAuthGuard } from './local-auth.guard'
+import { AuthService } from './auth.service'
+import { CreateUserDto } from 'src/users/dto/user-registration.dto'
 
-@Controller()
+@Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+	constructor(private authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
-  }
+	@UseGuards(LocalAuthGuard)
+	@Post('login')
+	async login(@Request() req) {
+		return this.authService.login(req.user)
+	}
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
-
-  @Post('auth/registration')
-  @HttpCode(HttpStatus.CREATED)
-  @Header('origin', 'none')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.authService.registration(createUserDto);
-  }
+	@Post('registration')
+	@HttpCode(HttpStatus.CREATED)
+	@Header('origin', 'none')
+	create(@Body() createUserDto: CreateUserDto) {
+		return this.authService.registration(createUserDto)
+	}
 }
